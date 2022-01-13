@@ -1,3 +1,3 @@
-module github.com/GregoryUnderscore/Mining-Automation-Shared/v1.0
+module github.com/GregoryUnderscore/Mining-Automation-Shared
 
 go 1.17
