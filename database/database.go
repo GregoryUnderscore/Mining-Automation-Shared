@@ -6,7 +6,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/GregoryUnderscore/Mining-Automation-Shared/models"
+	. "github.com/GregoryUnderscore/Mining-Automation-Shared/models"
 )
 
 // Connect to a PostgreSQL database according to the passed parameters.
@@ -50,7 +50,7 @@ func Connect(host string, port string, database string, user string, password st
 func VerifyAndUpdateSchema(db *gorm.DB) {
 	log.Println("Verifying/updating schema")
 	// Create the schema if it does not exist. This also will perform alterations.
-	db.AutoMigrate(&models.Provider{}, &models.Algorithm{}, &models.Pool{}, &models.PoolStats{},
-		&models.Coin{}, &models.CoinPrice{})
+	db.AutoMigrate(&Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
+		&Coin{}, &CoinPrice{})
 	log.Println("Schema verified.")
 }

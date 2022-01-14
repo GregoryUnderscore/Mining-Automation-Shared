@@ -64,3 +64,7 @@ type Provider struct {
 	Website string
 	Fee     float32
 }
+
+func main() {
+	// Does nothing
+}
