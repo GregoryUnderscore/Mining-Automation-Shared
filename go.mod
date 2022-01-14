@@ -1,4 +1,4 @@
-module github.com/GregoryUnderscore/Mining-Automation-Shared
+module Mining-Automation-Shared
 
 go 1.17
 
