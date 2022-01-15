@@ -1,4 +1,4 @@
-package database
+package main
 
 import (
 	"log"
@@ -56,4 +56,8 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 	// ==> Schema required for miner statistics.
 	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
 	log.Println("Schema verified.")
+}
+
+funct main() {
+	// Does nothing	
 }
