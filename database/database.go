@@ -6,7 +6,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	. "Mining-Automation-Shared/models"
+	. "github.com/GregoryUnderscore/Mining-Automation-Shared/models"
 )
 
 // Connect to a PostgreSQL database according to the passed parameters.
