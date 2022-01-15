@@ -50,7 +50,10 @@ func Connect(host string, port string, database string, user string, password st
 func VerifyAndUpdateSchema(db *gorm.DB) {
 	log.Println("Verifying/updating schema")
 	// Create the schema if it does not exist. This also will perform alterations.
+	// ==> Schema required for ZergPool statistics.
 	db.AutoMigrate(&Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
 		&Coin{}, &CoinPrice{})
+	// ==> Schema required for miner statistics.
+	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
 	log.Println("Schema verified.")
 }
