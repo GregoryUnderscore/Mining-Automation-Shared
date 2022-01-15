@@ -58,6 +58,6 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 	log.Println("Schema verified.")
 }
 
-funct main() {
-	// Does nothing	
+func main() {
+	// Does nothing
 }
