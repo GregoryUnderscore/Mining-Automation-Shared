@@ -1,6 +1,6 @@
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220114072232-8b44d8489cb3 h1:Ngn0QEX/Rl2apCHaRWo2Y1AVyypxtGHC+SiZkpdwypo=
-github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220114072232-8b44d8489cb3/go.mod h1:4eX9e7jRW3gp5Z/K1Jbf4vOYuJxXYuTCt06BuSjqsfA=
+github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220115112419-ba51533d56db h1:qrpS32w9AK6ae7BRDD5o6t5oawxQRV4MnxAkFEDMBgU=
+github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220115112419-ba51533d56db/go.mod h1:4eX9e7jRW3gp5Z/K1Jbf4vOYuJxXYuTCt06BuSjqsfA=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/cockroachdb/apd v1.1.0 h1:3LFP3629v+1aKXU5Q37mxmRxX/pIu1nijXydLShEq5I=
