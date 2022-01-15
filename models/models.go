@@ -10,6 +10,8 @@ import (
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
+// NOTE: These should only be algorithms supported by a pool provider. There is no reason to add
+// algorithms that are not supported by a pool.
 type Algorithm struct {
 	ID   uint64 `gorm:"primaryKey"`
 	Name string
@@ -65,6 +67,8 @@ type MinerSoftwareAlgos struct {
 	// The name utilized by the miner software. This will be applied to the algorithm parameter at runtime.
 	// NOTE: If this is blank or null, the name from the algorithm table is used.
 	Name string
+	// If the algo requires additional parameters, that is handled here.
+	ExtraParams string
 }
 
 // Statistics for a miner, specific software, and an algorithm. This can be utilized to make estimates
