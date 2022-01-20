@@ -54,6 +54,9 @@ type MinerSoftware struct {
 	// An optional parameter that will pass a wallet to the pool. Some mining software requires
 	// connecting to a pool, and some pools require a wallet to connect.
 	WalletParam string
+	// Some software allows logging to a file. This is optional. If this is not set, the screen
+	// output is saved to a file if possible.
+	FileParam string
 	// Any other raw parameters and their values. This is just tacked onto the executable at runtime.
 	OtherParams string
 }
