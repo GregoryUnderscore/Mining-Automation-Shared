@@ -51,6 +51,9 @@ type MinerSoftware struct {
 	// An optional parameter that will require the software to connect to a pool. Some software
 	// does not have a benchmark mode and must actually connect.
 	PoolParam string
+	// An optional parameter that will pass a wallet to the pool. Some mining software requires
+	// connecting to a pool, and some pools require a wallet to connect.
+	WalletParam string
 	// Any other raw parameters and their values. This is just tacked onto the executable at runtime.
 	OtherParams string
 }
