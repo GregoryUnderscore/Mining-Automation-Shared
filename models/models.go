@@ -59,6 +59,9 @@ type MinerSoftware struct {
 	FileParam string
 	// Any other raw parameters and their values. This is just tacked onto the executable at runtime.
 	OtherParams string
+	// How many lines to skip on the output. Some software outputs low hashrates initially, and those
+	// can be skipped. Setting this to 1 skips 1 line and so forth.
+	SkipLines uint8
 }
 
 // Miner software can call the same algorithm differently. This is used as a map between the algorithms
