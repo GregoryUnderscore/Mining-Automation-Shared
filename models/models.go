@@ -45,14 +45,12 @@ type MinerSoftware struct {
 	ID      uint64 `gorm:"primaryKey"`
 	Name    string // The general name of the miner, e.g. lolMiner, cpuminer-opt, etc.
 	Website string // Preferably the Github repository website
-	// This is important. The miner statistics program utilizes this to determine
-	// which miner software is in use on-the-fly. It must match the executable.
-	// For instance, if the executable is minerExecv1.2.3.exe, minerExec should
-	// probably be the prefix as the version numbers may fluctuate over time.
-	ExecutablePrefix string
 	// The parameter for an algorithm which can be unique to each miner software.
 	// Typically something like --algo. This does NOT include the value.
 	AlgoParam string
+	// An optional parameter that will require the software to connect to a pool. Some software
+	// does not have a benchmark mode and must actually connect.
+	PoolParam string
 	// Any other raw parameters and their values. This is just tacked onto the executable at runtime.
 	OtherParams string
 }
