@@ -48,12 +48,18 @@ func Connect(host string, port string, database string, user string, password st
 // @param db - The active database connection
 // @returns Nothing
 func VerifyAndUpdateSchema(db *gorm.DB) {
+	var schemaVersion Version
 	log.Println("Verifying/updating schema")
-	// Create the schema if it does not exist. This also will perform alterations.
-	// ==> Schema required for ZergPool statistics.
-	db.AutoMigrate(&Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
-		&Coin{}, &CoinPrice{})
-	// ==> Schema required for miner statistics.
-	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+	db.Where("name = ?", "database").Find(&schemaVersion)
+	// If the database schema version is old, update it.
+	if (Version{}) == schemaVersion || schemaVersion.Version <= SchemaVersion {
+		// Create the schema if it does not exist. This also will perform alterations.
+		// ==> Schema required for ZergPool statistics.
+		db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
+			&Coin{}, &CoinPrice{})
+		// ==> Schema required for miner statistics.
+		db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+	}
 	log.Println("Schema verified.")
+
 }
