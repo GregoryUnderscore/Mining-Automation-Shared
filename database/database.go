@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -49,7 +50,7 @@ func Connect(host string, port string, database string, user string, password st
 // @returns Nothing
 func VerifyAndUpdateSchema(db *gorm.DB) {
 	var schemaVersion Version
-	log.Println("Verifying/updating schema")
+	log.Println("Verifying schema...")
 	if db.Migrator().HasTable(&Version{}) {
 		db.Where("name = ?", "database").Find(&schemaVersion)
 		// If the database schema version is old, update it.
@@ -59,6 +60,7 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 			if (Version{}) == schemaVersion {
 				createSchemaVersion(db)
 			} else {
+				log.Println("Updating schema version to " + fmt.Sprint(SchemaVersion) + "...")
 				schemaVersion.Version = SchemaVersion
 				result := db.Save(&schemaVersion)
 				if result.Error != nil {
@@ -78,6 +80,7 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 // @param db - The active database connection
 // @returns Nothing
 func createSchemaVersion(db *gorm.DB) {
+	log.Println("Storing schema version as " + fmt.Sprint(SchemaVersion) + "...")
 	var schemaVersion Version
 	schemaVersion.Name = "database"
 	schemaVersion.Version = SchemaVersion
@@ -90,6 +93,7 @@ func createSchemaVersion(db *gorm.DB) {
 // Create or update the database schema according to the shared models.
 // @param db - The active database connection
 func updateSchema(db *gorm.DB) {
+	log.Println("Creating/updating schema...")
 	// Create the schema if it does not exist. This also will perform alterations.
 	// ==> Schema required for ZergPool statistics.
 	db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
