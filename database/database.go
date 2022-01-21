@@ -63,15 +63,15 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 		if (Version{}) == schemaVersion {
 			schemaVersion.Name = "database"
 			schemaVersion.Version = SchemaVersion
-			result := db.Save(&schemaVersion)
-			if result.Error != nil {
-				log.Fatalf("Issue updating schema version.\n", result.Error)
-			}
-		} else {
-			schemaVersion.Version = SchemaVersion
 			result := db.Create(&schemaVersion)
 			if result.Error != nil {
 				log.Fatalf("Issue creating schema version.\n", result.Error)
+			}
+		} else {
+			schemaVersion.Version = SchemaVersion
+			result := db.Save(&schemaVersion)
+			if result.Error != nil {
+				log.Fatalf("Issue updating schema version.\n", result.Error)
 			}
 		}
 	}
