@@ -49,12 +49,13 @@ func Connect(host string, port string, database string, user string, password st
 // @param db - The active database connection
 // @returns Nothing
 func VerifyAndUpdateSchema(db *gorm.DB) {
-	var schemaVersion Version
 	log.Println("Verifying schema...")
 	if db.Migrator().HasTable(&Version{}) {
+		var schemaVersion Version
 		db.Where("name = ?", "database").Find(&schemaVersion)
 		// If the database schema version is old, update it.
-		if (Version{}) == schemaVersion || schemaVersion.Version <= SchemaVersion {
+		if (Version{}) == schemaVersion || schemaVersion.Version < SchemaVersion {
+			log.Println("Found older schema v" + fmt.Sprint(schemaVersion.Version) + "...")
 			updateSchema(db) // Create/update the database schema
 			// Ensure the schema version is up-to-date.
 			if (Version{}) == schemaVersion {
