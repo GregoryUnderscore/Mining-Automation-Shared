@@ -50,31 +50,50 @@ func Connect(host string, port string, database string, user string, password st
 func VerifyAndUpdateSchema(db *gorm.DB) {
 	var schemaVersion Version
 	log.Println("Verifying/updating schema")
-	db.Where("name = ?", "database").Find(&schemaVersion)
-	// If the database schema version is old, update it.
-	if (Version{}) == schemaVersion || schemaVersion.Version <= SchemaVersion {
-		// Create the schema if it does not exist. This also will perform alterations.
-		// ==> Schema required for ZergPool statistics.
-		db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
-			&Coin{}, &CoinPrice{})
-		// ==> Schema required for miner statistics.
-		db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
-		// Ensure the schema version is up-to-date.
-		if (Version{}) == schemaVersion {
-			schemaVersion.Name = "database"
-			schemaVersion.Version = SchemaVersion
-			result := db.Create(&schemaVersion)
-			if result.Error != nil {
-				log.Fatalf("Issue creating schema version.\n", result.Error)
-			}
-		} else {
-			schemaVersion.Version = SchemaVersion
-			result := db.Save(&schemaVersion)
-			if result.Error != nil {
-				log.Fatalf("Issue updating schema version.\n", result.Error)
+	if db.Migrator().HasTable(&Version{}) {
+		db.Where("name = ?", "database").Find(&schemaVersion)
+		// If the database schema version is old, update it.
+		if (Version{}) == schemaVersion || schemaVersion.Version <= SchemaVersion {
+			updateSchema(db) // Create/update the database schema
+			// Ensure the schema version is up-to-date.
+			if (Version{}) == schemaVersion {
+				createSchemaVersion(db)
+			} else {
+				schemaVersion.Version = SchemaVersion
+				result := db.Save(&schemaVersion)
+				if result.Error != nil {
+					log.Fatalf("Issue updating schema version.\n", result.Error)
+				}
 			}
 		}
+	} else { // Table does not exist. An update is definitely needed.
+		updateSchema(db) // Create/update the database schema
+		createSchemaVersion(db)
 	}
 	log.Println("Schema verified.")
 
+}
+
+// Create the database version record and store the version.
+// @param db - The active database connection
+// @returns Nothing
+func createSchemaVersion(db *gorm.DB) {
+	var schemaVersion Version
+	schemaVersion.Name = "database"
+	schemaVersion.Version = SchemaVersion
+	result := db.Create(&schemaVersion)
+	if result.Error != nil {
+		log.Fatalf("Issue creating schema version.\n", result.Error)
+	}
+}
+
+// Create or update the database schema according to the shared models.
+// @param db - The active database connection
+func updateSchema(db *gorm.DB) {
+	// Create the schema if it does not exist. This also will perform alterations.
+	// ==> Schema required for ZergPool statistics.
+	db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
+		&Coin{}, &CoinPrice{})
+	// ==> Schema required for miner statistics.
+	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
 }
