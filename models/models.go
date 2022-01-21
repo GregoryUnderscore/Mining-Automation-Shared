@@ -8,6 +8,9 @@ import (
 // Database Tables
 // ====================================
 
+// This is used to determine if the schema should be updated.
+const SchemaVersion = 1.0
+
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
 // NOTE: These should only be algorithms supported by a pool provider. There is no reason to add
@@ -122,6 +125,14 @@ type Provider struct {
 	Name    string
 	Website string
 	Fee     float32
+}
+
+// This is used to track the schema version of the database and possibly other things to identify
+// if an update is necessary. Avoids unnecessary updates.
+type Version struct {
+	ID      uint8 `gorm:"primaryKey"`
+	Name    string
+	Version float32
 }
 
 func main() {
