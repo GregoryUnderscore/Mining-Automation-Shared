@@ -59,6 +59,21 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 			&Coin{}, &CoinPrice{})
 		// ==> Schema required for miner statistics.
 		db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+		// Ensure the schema version is up-to-date.
+		if (Version{}) == schemaVersion {
+			schemaVersion.Name = "database"
+			schemaVersion.Version = SchemaVersion
+			result := db.Save(&schemaVersion)
+			if result.Error != nil {
+				log.Fatalf("Issue updating schema version.\n", result.Error)
+			}
+		} else {
+			schemaVersion.Version = SchemaVersion
+			result := db.Create(&schemaVersion)
+			if result.Error != nil {
+				log.Fatalf("Issue creating schema version.\n", result.Error)
+			}
+		}
 	}
 	log.Println("Schema verified.")
 
