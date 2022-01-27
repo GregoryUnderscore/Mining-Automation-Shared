@@ -1,5 +1,7 @@
 package database
 
+// General database functions shared across various repositories.
+
 import (
 	"fmt"
 	"log"
@@ -44,6 +46,32 @@ func Connect(host string, port string, database string, user string, password st
 	return db
 }
 
+// Create the database version record and store the version.
+// @param db - The active database connection
+// @returns Nothing
+func createSchemaVersion(db *gorm.DB) {
+	log.Println("Storing schema version as " + fmt.Sprint(SchemaVersion) + "...")
+	var schemaVersion Version
+	schemaVersion.Name = "database"
+	schemaVersion.Version = SchemaVersion
+	result := db.Create(&schemaVersion)
+	if result.Error != nil {
+		log.Fatalf("Issue creating schema version.\n", result.Error)
+	}
+}
+
+// Create or update the database schema according to the shared models.
+// @param db - The active database connection
+func updateSchema(db *gorm.DB) {
+	log.Println("Creating/updating schema...")
+	// Create the schema if it does not exist. This also will perform alterations.
+	// ==> Schema required for ZergPool statistics.
+	db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
+		&Coin{}, &CoinPrice{})
+	// ==> Schema required for miner statistics.
+	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+}
+
 // Verify the current schema contains all the appropriate tables, and if not, create/update them
 // according to the current models.
 // @param db - The active database connection
@@ -74,31 +102,26 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 		createSchemaVersion(db)
 	}
 	log.Println("Schema verified.")
-
 }
 
-// Create the database version record and store the version.
-// @param db - The active database connection
-// @returns Nothing
-func createSchemaVersion(db *gorm.DB) {
-	log.Println("Storing schema version as " + fmt.Sprint(SchemaVersion) + "...")
-	var schemaVersion Version
-	schemaVersion.Name = "database"
-	schemaVersion.Version = SchemaVersion
-	result := db.Create(&schemaVersion)
-	if result.Error != nil {
-		log.Fatalf("Issue creating schema version.\n", result.Error)
+// Verify the miner exists in the database. If not, create it.
+// @param tx - The active database session
+// @param minerName - The name of the mining hardware
+// @returns The ID associated with the miner.
+func verifyMiner(tx *gorm.DB, minerName string) uint64 {
+	var miner Miner
+	result := tx.Where("name = ?", minerName).Limit(1).Find(&miner)
+	if result.RowsAffected == 0 {
+		log.Println("Creating miner...")
+		miner.Name = minerName
+		result = tx.Create(&miner)
+		if result.Error != nil {
+			log.Fatalf("Issue creating miner.\n", result.Error)
+		}
+	} else if result.Error != nil {
+		log.Fatalf("Unknown issue storing miner.\n", result.Error)
+	} else {
+		log.Println("Found existing miner.")
 	}
-}
-
-// Create or update the database schema according to the shared models.
-// @param db - The active database connection
-func updateSchema(db *gorm.DB) {
-	log.Println("Creating/updating schema...")
-	// Create the schema if it does not exist. This also will perform alterations.
-	// ==> Schema required for ZergPool statistics.
-	db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
-		&Coin{}, &CoinPrice{})
-	// ==> Schema required for miner statistics.
-	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+	return miner.ID
 }
