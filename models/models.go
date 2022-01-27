@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.0
+const SchemaVersion = 1.01
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -79,6 +79,9 @@ type MinerSoftwareAlgos struct {
 	Name string
 	// If the algo requires additional parameters, that is handled here.
 	ExtraParams string
+	// If this is 1, do not use in automated optimization. Some software tends to be buggy
+	// or produce invalid shares more than others. In those cases, it may makes sense to exclude.
+	DoNotUse bool
 }
 
 // Statistics for a miner, specific software, and an algorithm. This can be utilized to make estimates
