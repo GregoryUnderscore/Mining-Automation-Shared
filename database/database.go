@@ -108,7 +108,7 @@ func VerifyAndUpdateSchema(db *gorm.DB) {
 // @param tx - The active database session
 // @param minerName - The name of the mining hardware
 // @returns The ID associated with the miner.
-func verifyMiner(tx *gorm.DB, minerName string) uint64 {
+func VerifyMiner(tx *gorm.DB, minerName string) uint64 {
 	var miner Miner
 	result := tx.Where("name = ?", minerName).Limit(1).Find(&miner)
 	if result.RowsAffected == 0 {
