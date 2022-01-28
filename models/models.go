@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.01
+const SchemaVersion = 1.02
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -39,8 +39,9 @@ type CoinPrice struct {
 
 // Mining hardware.
 type Miner struct {
-	ID   uint64 `gorm:"primaryKey"`
-	Name string // A unique name for the hardware
+	ID                  uint64 `gorm:"primaryKey"`
+	Name                string // A unique name for the hardware
+	MinerSoftwareAlgoID uint64 // The active software/algo mining on this miner (or last known active)
 }
 
 // Software executed on the miner to mine.
