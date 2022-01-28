@@ -1,4 +1,4 @@
-module pools
+module github.com/GregoryUnderscore/Mining-Automation-Shared/utils/pools
 
 go 1.17
 
