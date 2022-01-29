@@ -69,7 +69,8 @@ func updateSchema(db *gorm.DB) {
 	db.AutoMigrate(&Version{}, &Provider{}, &Algorithm{}, &Pool{}, &PoolStats{},
 		&Coin{}, &CoinPrice{})
 	// ==> Schema required for miner statistics.
-	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{})
+	db.AutoMigrate(&Miner{}, &MinerStats{}, &MinerSoftware{}, &MinerSoftwareAlgos{},
+		&MinerMinerSoftware{})
 }
 
 // Verify the current schema contains all the appropriate tables, and if not, create/update them

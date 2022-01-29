@@ -3,7 +3,7 @@ module github.com/GregoryUnderscore/Mining-Automation-Shared/database
 go 1.17
 
 require (
-	github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220121105419-02e485c66839
+	github.com/GregoryUnderscore/Mining-Automation-Shared/models v0.0.0-20220129040310-e2c78f7e8b83
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/gorm v1.22.5
 )
