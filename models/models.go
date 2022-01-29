@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.03
+const SchemaVersion = 1.04
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -42,6 +42,16 @@ type Miner struct {
 	ID                  uint64 `gorm:"primaryKey"`
 	Name                string // A unique name for the hardware
 	MinerSoftwareAlgoID uint64 // The active software/algo mining on this miner (or last known active)
+}
+
+// Mining hardware / mining software bridge
+// This is a bridge between mining hardware and mining software and can be used to store details specific
+// to the miner/software such as file paths.
+type MinerMinerSoftware struct {
+	ID              uint64 `gorm:"primaryKey"`
+	MinerID         uint64
+	MinerSoftwareID uint64
+	FilePath        string // The file path to the software on the miner.
 }
 
 // Software executed on the miner to mine.
