@@ -59,7 +59,7 @@ type MinerSoftware struct {
 	// connecting to a pool, and some pools require a wallet to connect.
 	WalletParam string
 	// A parameter often used to identify miners on the pool. Can sometimes be used to set options too.
-	PasswordParam String
+	PasswordParam string
 	// Some software allows logging to a file. This is optional. If this is not set, the screen
 	// output is saved to a file if possible.
 	FileParam string
