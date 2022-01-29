@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.02
+const SchemaVersion = 1.03
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -58,6 +58,8 @@ type MinerSoftware struct {
 	// An optional parameter that will pass a wallet to the pool. Some mining software requires
 	// connecting to a pool, and some pools require a wallet to connect.
 	WalletParam string
+	// A parameter often used to identify miners on the pool. Can sometimes be used to set options too.
+	PasswordParam String
 	// Some software allows logging to a file. This is optional. If this is not set, the screen
 	// output is saved to a file if possible.
 	FileParam string
