@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.05
+const SchemaVersion = 1.06
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -73,6 +73,8 @@ type MinerSoftware struct {
 	// Some software allows logging to a file. This is optional. If this is not set, the screen
 	// output is saved to a file if possible.
 	FileParam string
+	// Parameters specific to benchmarking.
+	BenchmarkParams string
 	// Any other raw parameters and their values. This is just tacked onto the executable at runtime.
 	OtherParams string
 	// How many lines to skip on the output. Some software outputs low hashrates initially, and those
