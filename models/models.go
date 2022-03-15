@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.07
+const SchemaVersion = 1.08
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
@@ -44,6 +44,9 @@ type Miner struct {
 	MinerSoftwareAlgoID uint64 // The active software/algo mining on this miner (or last known active)
 	// True will send e-mails if configured and false will not, even if configured.
 	SendEmail *bool `gorm:"default:true"`
+	// The date/time this miner last performed a check-in. Can be used to determine if a miner has
+	// stopped working.
+	LastCheckIn time.Time
 }
 
 // Mining hardware / mining software bridge
