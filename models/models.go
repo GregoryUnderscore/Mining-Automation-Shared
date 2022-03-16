@@ -47,6 +47,9 @@ type Miner struct {
 	// The date/time this miner last performed a check-in. Can be used to determine if a miner has
 	// stopped working.
 	LastCheckIn time.Time
+	// Offline notices can be sent if a miner does not check-in. This flag is reset upon mining start.
+	// This ensures multiple notices are not sent when the miner does go offline.
+	OfflineNoticeSent bool
 }
 
 // Mining hardware / mining software bridge
