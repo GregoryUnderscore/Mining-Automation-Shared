@@ -9,7 +9,7 @@ import (
 // ====================================
 
 // This is used to determine if the schema should be updated.
-const SchemaVersion = 1.08
+const SchemaVersion = 1.09
 
 // A mining algorithm such as scrypt.
 // Making this distinct will allow mapping between various pools and mining software.
