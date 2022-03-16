@@ -14,7 +14,7 @@ import (
 // @param emailPort - The port for the SMTP server
 // @param emailTo - The recipient
 // @param emailFrom - The originator of the e-mail
-func sendEmail(subject string, body string, emailUser string, emailPassword string, emailServer string,
+func SendEmail(subject string, body string, emailUser string, emailPassword string, emailServer string,
 	emailPort string, emailTo string, emailFrom string) {
 	// Create the authentication object
 	auth := smtp.PlainAuth("", emailUser, emailPassword, emailServer)
