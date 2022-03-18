@@ -16,6 +16,9 @@ import (
 // @param emailFrom - The originator of the e-mail
 func SendEmail(subject string, body string, emailUser string, emailPassword string, emailServer string,
 	emailPort string, emailTo string, emailFrom string) {
+	if len(emailServer) == 0 { // Do not proceed if an email server was not provided.
+		return
+	}
 	// Create the authentication object
 	auth := smtp.PlainAuth("", emailUser, emailPassword, emailServer)
 
