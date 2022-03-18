@@ -34,4 +34,5 @@ func SendEmail(subject string, body string, emailUser string, emailPassword stri
 	if err != nil { // Do not fatally error in case the e-mail server is just temporarily down.
 		log.Printf("Problem sending e-mail notification: \n", err)
 	}
+	log.Println("Email sent: " + subject)
 }
